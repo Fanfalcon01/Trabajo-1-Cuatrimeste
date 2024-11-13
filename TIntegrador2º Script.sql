@@ -2,6 +2,7 @@
 create DATABASE Colegio;
 use Colegio;
 Create Schema ColegioS;
+use ColegioS;
 Create TABLE Ciclo_Basico (
 idCB INT AUTO_INCREMENT PRIMARY KEY not null,
 BAlumno Varchar(32) not null,
@@ -45,11 +46,11 @@ foreign key (taller) references Taller(idTaller)
 ##2º
 #Insertar
 Insert into Taller (TAlumno, TGrupo, TNivel)
-Values ("Juaquin Sandolal","1","2");
+Values ("3","Juaquin Sandolal","1","2");
 Insert into Profesores (Temas, Horario, PNombres)
-Values ("Base de datos","17:30-20:40","Gian Madafakin Franco");
+Values ("4","Base de datos","17:30-20:40","Gian Madafakin Franco");
 Insert into Materias (MNormales, MEspeciales, MTaller, ProfePracticas, MProfesor, Taller)
-Values ("Gimnasia","Base de Datos","Modelos de sistemas","Ortiz","Gian Madafakin Franco","Ortiz");
+Values ("5","Gimnasia","Base de Datos","Modelos de sistemas","Ortiz","Gian Madafakin Franco","Ortiz");
 
 #Trigger
 DELIMITER //
@@ -58,7 +59,7 @@ After insert on Ciclo_Basico
 FOR EACH ROW
 BEGIN
 Insert into Ciclo_Basico (BAlumno, BCurso, BNivel, CPigmentos)
-Values ("Adriano Carli","1","2","0");
+Values ("1","Adriano Carli","1","2","0");
 END //
 DELIMITER ;
 
@@ -67,7 +68,7 @@ DELIMITER //
 Create Procedure Insertar_alumno (IN Alumno varchar(32), IN Ciclo_Superior INT, IN Nivel INT)
 Begin
 Insert into Ciclo_Superior (SAlumno, SCurso, SNivel)
-Values ("Juaquin Sandolal","5","2");
+Values ("2","Juaquin Sandolal","5","2");
 END //
 DELIMITER ;
 DELIMITER //
@@ -98,15 +99,15 @@ END //
 DELIMITER ;
 
 #Counsultas join
-Select IdCS, C.IdCS, SAlumno, SCurso, Snivel as Ciclo_Superior
-From Ciclo_Superior.C
-INNER JOIN Taller.T
-ON C.IdCS=T.IdCS ;
-Select IdCS, C.IdCS, SAlumno, SCurso, Snivel as Ciclo_Superior
-From Ciclo_Superior.C
-LEFT JOIN Taller.T
-ON C.IdCS=T.IdCS ;
-Select IdCS, C.IdCS, SAlumno, SCurso, Snivel as Ciclo_Superior
-From Ciclo_Superior.C
-RIGHT JOIN Taller.T
-ON C.IdCS=T.IdCS ;
+Select C.IdCS, C.SAlumno, C.SCurso, C.Snivel, T.TAlumno, T.TGrupo, T.TNivel
+From Ciclo_Superior C
+INNER JOIN Taller T
+ON C.IdCS=T.IdTaller ;
+Select C.IdCS, C.SAlumno, C.SCurso, C.Snivel, T.TAlumno, T.TGrupo, T.TNivel
+From Ciclo_Superior C
+LEFT JOIN Taller T
+ON C.IdCS=T.IdTaller ;
+Select C.IdCS, C.SAlumno, C.SCurso, C.Snivel, T.TAlumno, T.TGrupo, T.TNivel
+From Ciclo_Superior C
+RIGHT JOIN Taller T
+ON C.IdCS=T.IdTaller ;
